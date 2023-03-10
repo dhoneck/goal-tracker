@@ -1,7 +1,7 @@
 {
-  "name": "glowing-sniffle",
+  "name": "goal-tracking",
   "version": "1.0.0",
-  "description": "",
+  "description": "Goal Tracker is an application for tracking personal goals.",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -10,25 +10,25 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/justindevs/glowing-sniffle.git"
+    "url": "git+https://github.com/dhoneck/goal-tracker.git"
   },
-  "author": "Justin Gottschalk",
+  "author": "Dustin Honeck",
   "license": "MIT",
   "dependencies": {
-    "bcrypt": "^5.0.0",
-    "connect-session-sequelize": "^7.0.4",
-    "dotenv": "^8.2.0",
-    "express": "^4.17.1",
-    "express-handlebars": "^5.2.0",
-    "express-session": "^1.17.1",
-    "mysql2": "^2.2.5",
-    "sequelize": "^6.3.5"
+    "bcrypt": "^5.1.0",
+    "connect-session-sequelize": "^7.1.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "express-handlebars": "^7.0.2",
+    "express-session": "^1.17.3",
+    "mysql2": "^3.2.0",
+    "sequelize": "^6.29.2"
   },
   "devDependencies": {
-    "eslint": "^7.12.1"
+    "eslint": "^8.35.0"
   },
   "bugs": {
-    "url": "https://github.com/justindevs/glowing-sniffle/issues"
+    "url": "https://github.com/dhoneck/goal-tracker/issues"
   },
-  "homepage": "https://github.com/justindevs/glowing-sniffle#readme"
+  "homepage": "https://github.com/dhoneck/goal-tracker#readme"
 }
