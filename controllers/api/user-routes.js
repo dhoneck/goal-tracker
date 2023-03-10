@@ -6,7 +6,9 @@ const { User } = require('../../models');
 router.post('/', async (req, res) => {
   try {
     const dbUserData = await User.create({
-      name: req.body.username,
+      username: req.body.username,
+      first_name: req.body.firstName,
+      last_name: req.body.lastName,
       email: req.body.email,
       password: req.body.password,
     });
@@ -24,13 +26,14 @@ router.post('/', async (req, res) => {
 
 // Login
 router.post('/login', async (req, res) => {
+  // TODO: Allow username to be entered for auth - only email is accepted at this time
   try {
     const dbUserData = await User.findOne({
       where: {
         email: req.body.email,
       },
     });
-
+    
     if (!dbUserData) {
       res
         .status(400)
