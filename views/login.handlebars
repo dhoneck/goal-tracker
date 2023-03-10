@@ -1,40 +1,117 @@
-<div id="login-container" class="row justify-space-between-md">
-  <div class="login-card">
-    <h2 class="page-title">Login</h2>
-    <form class="form login-form">
-      <div class="form-group">
-        <label for="email-login">Email:</label>
-        <input class="form-input" type="text" id="email-login" />
-      </div>
-      <div class="form-group">
-        <label for="password-login">Password:</label>
-        <input class="form-input" type="password" id="password-login" />
-      </div>
-      <div class="form-group">
-        <button class="btn btn-primary" type="submit">login</button>
-      </div>
-    </form>
-  </div>
-  <div class="login-card">
-    <h2 class="page-title">Signup</h2>
-    <form class="form signup-form">
-      <div class="form-group">
-        <label for="username-signup">Username:</label>
-        <input class="form-input" type="text" id="username-signup" />
-      </div>
-      <div class="form-group">
-        <label for="email-signup">Email:</label>
-        <input class="form-input" type="text" id="email-signup" />
-      </div>
-      <div class="form-group">
-        <label for="password-signup">Password:</label>
-        <input class="form-input" type="password" id="password-signup" />
-      </div>
-      <div class="form-group">
-        <button class="btn btn-primary" type="submit">signup</button>
-      </div>
-    </form>
-  </div>
-</div>
+  <!-- Login Jumbotron -->
+  <section class="">
+    <div class="px-4 py-5 px-md-5 text-center text-lg-start" style="background-color: hsl(0, 0%, 96%)">
+      <div class="container">
+        <div class="row gx-lg-5 align-items-center">
+          <div class="col-lg-6 mb-5 mb-lg-0">
+            <h1 class="my-5 display-3 fw-bold ls-tight">
+              The best app <br />
+              <span class="text-primary">for goal tracking</span>
+            </h1>
+            <p style="color: hsl(217, 10%, 50.8%)">
+              Struggling to stick to your goals? Sign up for free and see how Goal Tracker is helping millions achieve their goals. Users can create goals and log their progress with ease which provides accountability and motivation by visualizing their progress.
+            </p>
+          </div>
 
-<script src="./js/login.js"></script>
+          <!-- Login card -->
+          <div class="col-lg-6 mb-5 mb-lg-0">
+            <div class="card">
+              <div class="card-body py-5 px-md-5">
+                <form class="login-form">
+                  <h3 class="mb-4">Sign In</h3>
+                  <div class="row">
+
+                  <!-- Username or email input -->
+                  <div class="form-outline mb-4">
+                    <input type="text" id="username-email-login" class="form-control" required />
+                    <label class="form-label" for="username-email-login">Username or Email</label>
+                  </div>
+
+                  <!-- Password input -->
+                  <div class="form-outline mb-4">
+                    <input type="password" id="password-login" class="form-control" required />
+                    <label class="form-label" for="password-login">Password</label>
+                  </div>
+
+                  <!-- Submit button -->
+                  <button type="submit" class="btn btn-primary btn-block mb-4">
+                    Log In
+                  </button>
+                  <hr>
+
+                  <!-- Create new user button -->
+                  <button type="button" class="btn btn-primary btn-block mb-4" data-mdb-toggle="modal" data-mdb-target="#signupModal">
+                    Create new account
+                  </button>
+
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Modal Sign Up -->
+  <div class="modal fade" id="signupModal" tabindex="-1" aria-labelledby="signupModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        
+        <!-- Modal body -->
+        <div class="modal-body">
+          <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+          <div class="card-body py-5 px-md-5">
+            
+            <form class="signup-form">
+              <h3 class="mb-4">Sign Up</h3>
+            
+              <!-- 2 column grid layout with text inputs for the first and last names -->
+              <!-- First name -->
+              <div class="row">
+                <div class="col-md-6 mb-4">
+                  <div class="form-outline">
+                    <input type="text" id="first-name-signup" class="form-control" required />
+                    <label class="form-label" for="first-name-signup">First name</label>
+                  </div>
+                </div>
+                <!-- Last name -->
+                <div class="col-md-6 mb-4">
+                  <div class="form-outline">
+                    <input type="text" id="last-name-signup" class="form-control" required />
+                    <label class="form-label" for="last-name-signup">Last name</label>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Username input -->
+              <div class="form-outline mb-4">
+                <input type="text" id="username-signup" class="form-control" required />
+                <label class="form-label" for="username-signup">Username</label>
+              </div>
+
+              <!-- Email input -->
+              <div class="form-outline mb-4">
+                <input type="email" id="email-signup" class="form-control" required />
+                <label class="form-label" for="email-signup">Email address</label>
+              </div>
+
+              <!-- Password input -->
+              <div class="form-outline mb-4">
+                <input type="password" id="password-signup" class="form-control" required />
+                <label class="form-label" for="password-signup">Password</label>
+              </div>
+
+              <!-- Submit button -->
+              <button type="submit" class="btn btn-primary btn-block mb-4">
+                Sign up
+              </button>
+            </form>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="./js/login.js"></script>
