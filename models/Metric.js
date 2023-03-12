@@ -38,6 +38,13 @@ Metric.init(
             'Boolean',
         ],
     },
+    goal_history_id: {
+      type: DataTypes.INTEGER,
+      references: {
+        model: 'goal_history',
+        key: 'id',
+      },
+    },
   },
   {
     sequelize,

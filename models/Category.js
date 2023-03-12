@@ -18,7 +18,7 @@ Category.init(
     goal_id: {
       type: DataTypes.INTEGER,
       references: {
-        model: 'metric',
+        model: 'goal',
         key: 'id',
       },
     },

@@ -18,13 +18,6 @@ GoalHistory.init(
         key: 'id',
       },    
     },
-    metric_id: {
-      type: DataTypes.INTEGER,
-      references: {
-        model: 'metric',
-        key: 'id',
-      },
-    },
     log_frequency: {
       type: DataTypes.INTEGER,
       allowNull: false,

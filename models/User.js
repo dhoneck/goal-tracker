@@ -20,6 +20,9 @@ User.init(
       type: DataTypes.STRING,
       unique: true,
       allowNull: false,
+      validate: {
+        isAlphanumeric: true,
+      },
     },
     first_name: {
       type: DataTypes.STRING,
