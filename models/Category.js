@@ -15,13 +15,6 @@ Category.init(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    goal_id: {
-      type: DataTypes.INTEGER,
-      references: {
-        model: 'goal',
-        key: 'id',
-      },
-    },
     user_id: {
       type: DataTypes.INTEGER,
       references: {

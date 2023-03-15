@@ -19,7 +19,7 @@ GoalHistory.init(
       },    
     },
     log_frequency: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING,
       allowNull: false,
       values: [
         'Time(s)',
@@ -37,6 +37,13 @@ GoalHistory.init(
     reminder_time: {
       type: DataTypes.STRING,
       allowNull: false,
+      values: [
+        'Hourly',
+        'Twice a day',
+        'Daily',
+        'Twice a week',
+        'Weekly'
+      ]
     },
     start_date: {
         type: DataTypes.DATE,
