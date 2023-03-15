@@ -39,13 +39,13 @@ router.get('/templates', async (req, res) => {
     }
 });
 
-// GET all goal information for the logged in user
-router.get('/:id', async (req, res) => {
+// GET all goal INFO for the logged in user
+router.get('/user/goals', async (req, res) => {
     try {
         console.log(req.session);
         const dbGoalData = await Goal.findAll({
             where: {
-                user_id: req.params.id,
+                user_id: req.session.user,
             },
             include: [
                 {
@@ -81,12 +81,12 @@ router.get('/:id', async (req, res) => {
 });
 
 // GET all goal DATA for the logged in user
-router.get('data/:id', async (req, res) => {
+router.get('/user/data', async (req, res) => {
     try {
         console.log(req.session);
         const dbGoalData = await Goal.findAll({
             where: {
-                user_id: req.params.id,
+                user_id: req.session.user,
             },
             include: [
                 {
@@ -143,6 +143,79 @@ router.get('data/:id', async (req, res) => {
         );
         res.status(200).json(goals);
     
+    } catch (err) {
+        console.log(err);
+        res.status(500).json(err);
+    }
+});
+
+// CREATE new goal
+router.post('user/:id/goal', async (req, res) => {
+    /*
+    Needs the following variables from the body of the request:
+    goalName,logFrequency,reminderTime,startDate,endDate,
+    timePeriod,metricLabel,metricUnit,categoryName
+    */
+    try {
+        const dbGoalData = await Goal.create({
+            goal_name: req.body.goalName,
+            user_id: req.params.id,
+        });
+        const dbHistoryData = await GoalHistory.create({
+            goal_id: dbGoalData.id,
+            log_frequency: req.body.logFrequency,
+            reminder_time: req.body.reminderTime,
+            start_date: req.body.startDate,
+            end_date: req.body.endDate,
+            time_period: req.body.timePeriod,
+        });
+        const dbMetricData = await Metric.create({
+            metric_label: req.body.metricLabel,
+            metric_unit: req.body.metricUnit,
+            goal_history_id: dbHistoryData.id,
+        });
+        const dbCategoryData = await Category.create({
+            category_name: req.body.categoryName,
+            goal_id: dbGoalData.id,
+            user_id: req.params.id,
+        });
+
+        res.status(200).json(dbGoalData, dbHistoryData, dbMetricData, dbCategoryData);
+    } catch (err) {
+        console.log(err);
+        res.status(500).json(err);
+    }
+});
+
+// CREATE new progress data on a goal
+// TODO
+//
+
+// CREATE new template goal
+router.post('/template', async (req, res) => {
+    /*
+    Needs the following variables from the body of the request:
+    goalName,logFrequency,reminderTime,startDate,endDate,
+    timePeriod,metricLabel,metricUnit,categoryName
+    */
+    try {
+        const dbCategoryData = await Category.create({
+            category_name: req.body.categoryName,
+        });
+        const dbGoalData = await Goal.create({
+            goal_name: req.body.goalName,
+            category_id: dbCategoryData.id,
+        });
+        const dbHistoryData = await GoalHistory.create({
+            goal_id: dbGoalData.id,
+            log_frequency: req.body.logFrequency,
+            reminder_time: req.body.reminderTime,
+            start_date: req.body.startDate,
+            end_date: req.body.endDate,
+            time_period: req.body.timePeriod,
+        }); 
+
+        res.status(200).json({dbCategoryData, dbGoalData, dbHistoryData});
     } catch (err) {
         console.log(err);
         res.status(500).json(err);

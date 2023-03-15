@@ -1,0 +1,26 @@
+{{#if loggedIn}}
+
+<div class="p-5 text-center bg-light">
+    <h1 class="mb-3">Let's get started</h1>
+    <h4 class="mb-3">What do you want to track?</h4>
+    <form class="row g-3" novalidate>
+        <div class="col-md-12">
+            <div class="form-outline">
+                <input type="text" class="form-control" id="goalName" required />
+                <label for="goalName" class="form-label">Goal Name</label>
+            </div>
+        </div>
+    </form>
+    
+    <h6 class="my-2">Track anything you want by entering a name above, or start with one of the templates below.</h6>
+
+    <div class="containter row">
+        {{#each goals as |goal|}}
+            {{>create-partial}}
+        {{/each}}
+    </div>
+    <a class="btn btn-primary" href="" role="button" id="continue-goal">Continue</a>
+</div>
+
+<script src="/js/createGoal.js"></script>
+{{/if}}

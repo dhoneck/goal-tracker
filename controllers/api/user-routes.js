@@ -76,4 +76,13 @@ router.post('/logout', (req, res) => {
   }
 });
 
+// GET User ID from session
+router.get('/getUserId', (req, res) => {
+  if (req.session.loggedIn) {
+    res.status(200).json({userId: req.session.user});
+  } else {
+    req.status(404).json({message: "user not logged in"});
+  }
+});
+
 module.exports = router;
