@@ -42,10 +42,11 @@ router.get('/templates', async (req, res) => {
 // GET all goal INFO for the logged in user
 router.get('/user/goals', async (req, res) => {
     try {
-        console.log(req.session);
+        const userId = req.session.user;
+        console.log(`This request came from user ${userId}`);
         const dbGoalData = await Goal.findAll({
             where: {
-                user_id: req.session.user,
+                user_id: userId,
             },
             include: [
                 {
