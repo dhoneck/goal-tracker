@@ -46,7 +46,13 @@ User.hasMany(Goal, {
     foreignKey: 'user_id',
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
-})
+});
+
+Category.hasMany(Goal, {
+    foreignKey: 'category_id',
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+});
 
 Goal.hasMany(GoalHistory, {
     foreignKey: 'goal_id',
