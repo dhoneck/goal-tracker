@@ -39,6 +39,44 @@ router.get('/templates', async (req, res) => {
     }
 });
 
+// GET all user categories
+router.get('/user/categories', async (req, res) =>  {
+    try {
+        const userId = req.session.user;
+        console.log(`This request came from user ${userId}`);
+        const data = await Category.findAll({
+            where: {
+                user_id: userId,
+            },
+            attributes: [
+                'category_name',
+            ],
+            order: [
+                ['category_name', 'ASC']
+            ],
+            include: [
+                {
+                    model: Goal,
+                    attributes: [
+                        'goal_name',
+                    ]
+                }
+            ]
+        });
+        if (!data) {
+            res.status(404).json("message: no categories for user found");
+        }
+
+        const categories = data.map((category) => 
+            category.get({ plain: true })
+        );
+        res.status(200).json(categories);
+    } catch (err) {
+        console.log(err);
+        res.status(500).json(err);
+    }
+});
+
 // GET all goal INFO for the logged in user
 router.get('/user/goals', async (req, res) => {
     try {
