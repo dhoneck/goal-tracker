@@ -1,0 +1,37 @@
+[
+  {
+    "goal_name": "Save $1000 a month for 6 months",
+    "user_id": 1,
+    "category_id": 1 
+  },
+  {
+    "goal_name": "Contribute $6000 to IRA by the end of the year",
+    "user_id": 1,
+    "category_id": 1
+  },
+  {
+    "goal_name": "Exercise 30 minutes 4 times a week",
+    "user_id": 1,
+    "category_id": 2
+  },
+  {
+    "goal_name": "Practice coding 15 hours a week until the end of the May",
+    "user_id": 1,
+    "category_id": 3
+  },
+  {
+    "goal_name": "Spend 2 hours working with career services each week",
+    "user_id": 1,
+    "category_id": 3
+  },
+  {
+    "goal_name": "Meet with friends once a week",
+    "user_id": 1,
+    "category_id": 4
+  },
+   {
+    "goal_name": "Call my family every week",
+    "user_id": 1,
+    "category_id": 4
+  }
+]

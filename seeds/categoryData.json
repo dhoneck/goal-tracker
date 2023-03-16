@@ -1,0 +1,18 @@
+[
+  {
+    "category_name": "Financial",
+    "user_id": 1
+  },
+  {
+    "category_name": "Health",
+    "user_id": 1
+  },
+  {
+    "category_name": "Career",
+    "user_id": 1
+  },
+  {
+    "category_name": "Relational",
+    "user_id": 1
+  }
+]
