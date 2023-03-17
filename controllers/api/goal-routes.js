@@ -1,12 +1,12 @@
 const router = require('express').Router();
 const { Goal, GoalHistory, GoalPeriod, Category, Progress, Metric } = require('../../models');
 
-// GET all goal templates information
-router.get('/templates', async (req, res) => {
+// GET goal information by id
+router.get('/goalByID/:id', async (req, res) => {
     try {
         const dbGoalData = await Goal.findAll({
             where: {
-                user_id: null,
+                id: req.params.id,
             },
             include: [
                 {
@@ -28,7 +28,7 @@ router.get('/templates', async (req, res) => {
         const goals = dbGoalData.map((goal) => 
             goal.get({ plain: true })
         );
-        res.render('creategoal', {
+        res.status(200).json({
             goals,
             loggedIn: req.session.loggedIn,
         });

@@ -192,4 +192,6 @@ addGoalBtn
 submitCategoryBtn
   .addEventListener('click', submitCategory);
 
-refreshPage('All Goals');
+if (window.location.pathname == "/") {
+  refreshPage('All Goals');
+}
