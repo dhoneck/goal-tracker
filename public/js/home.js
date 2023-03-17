@@ -2,7 +2,7 @@
 const addCategoryBtn = document.getElementById('add-category-btn');
 const addGoalBtn = document.getElementById('add-goal-btn');
 const goalNav = document.getElementById('goal-nav-list');
-const goalsContainer = document.getElementById('goals-container');
+const accordionContainer = document.getElementById('accordion');
 let goalNavItems;
 
 // Fetches and returns user data
@@ -66,17 +66,66 @@ function createNav(categories) {
 }
 
 // Displays goals based on category name
-async function displayGoals(category) {
-  // TODO: Display goals based on category
-  console.log(`Display goals for category '${category}'`)
+async function displayGoals(category, userData) {
+  // Reset accordion container
+  accordionContainer.innerHTML = '';
+  console.log(`Display goals for category '${category}'`);
+  
+  // Filter which categories to display
+  let filteredCategories;
+  if (category == 'All Goals') {
+    filteredCategories = userData;
+  } else {
+    filteredCategories = [ userData.find(element => element.category_name == category) ];
+  }
+  console.log(filteredCategories);
+  
+  // Use index to make unique IDs
+  let index = 0
+  // Go through each category
+  for (const category of filteredCategories) {
+    console.log('Category:');
+    console.log(category);
+    // Loop through each goal
+    for (const goal of category.goals) {
+      console.log('Goal:');
+      console.log(goal);
+      // Insert goal items into accordion
+      let accordionTemplate =
+        `
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="heading${index}">
+            <button
+              class="accordion-button"
+              type="button"
+              data-mdb-toggle="collapse"
+              data-mdb-target="#collapse${index}"
+              aria-expanded="true"
+              aria-controls="collapse${index}"
+            >
+              ${goal.goal_name}
+            </button>
+          </h2>
+          <div id="collapse${index}" class="accordion-collapse collapse" aria-labelledby="heading${index}" data-mdb-parent="#accordion">
+            <div class="accordion-body">
+              Some Cool Graphics Go Here
+            </div>
+          </div>
+        </div>
+        `
+        index++;
+        // Add accordion to container
+        accordionContainer.innerHTML += accordionTemplate;
+    }
+  }
 }
 
 // Refreshes user data, nav bar, and goals
-async function refreshPage() {
+async function refreshPage(goalCategory) {
   let userData = await getData()
   const categoryArr = getCategories(userData);
   createNav(categoryArr);
-  displayGoals('All Goals');
+  displayGoals(goalCategory, userData);
 
   // Add event listener to nav 
   goalNavItems.forEach(function(elem) {
@@ -84,11 +133,10 @@ async function refreshPage() {
       e.preventDefault();
       const category = e.target.textContent;
       console.log(`'${category}' was clicked`);
-      displayGoals(category);
+      displayGoals(category, userData);
     });
   });
 }
-
 
 // Event listener to add a new goal
 const addGoalHandler = async (e) => {
@@ -109,6 +157,4 @@ const addGoalHandler = async (e) => {
 addGoalBtn
 .addEventListener('click', addGoalHandler);
 
-
-
-refreshPage();
+refreshPage('All Goals');
