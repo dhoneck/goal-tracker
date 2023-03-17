@@ -24,6 +24,24 @@ Category.init(
     },
   },
   {
+    hooks: {
+      beforeCreate: async (newCategoryData) => {
+        // Capitalize first letter of each word
+        const categoryName = newCategoryData.category_name;
+        const words = categoryName.split(" ");
+        for (let i = 0; i < words.length; i++) {
+            words[i] = words[i][0].toUpperCase() + words[i].substr(1);
+        }
+        newCategoryData.category_name = words.join(" ");
+        return newCategoryData;
+      },
+    },
+    indexes: [
+      {
+        unique: true,
+        fields: ['user_id', 'category_name']
+      }
+    ],
     sequelize,
     timestamps: false,
     freezeTableName: true,

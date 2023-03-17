@@ -17,18 +17,21 @@
 <body>
   <header class="display-flex justify-space-between align-center p-2">
     <h1 class="text-center">
-      Goal Tracker
+      <a href="/" style="color:#4f4f4f">
+        Goal Tracker
+      </a>
     </h1>
     {{#if loggedIn}}
     <nav class="text-center">
-      <button class="btn" id="add-category-btn">Add Category</button>
-      <button class="btn" id="add-goal-btn">Add Goal</button>
-      <button class="btn" id="logout">logout</button>
+      <button class="btn btn-primary" id="add-category-btn" data-mdb-toggle="modal" data-mdb-target="#staticBackdrop">Add Category</button>
+      <button class="btn btn-primary" id="add-goal-btn">Add Goal</button>
+      <button class="btn btn-primary" id="logout">logout</button>
     </nav>
     {{/if}}
   </header>
   <main class="container container-fluid mt-5">
     {{{ body }}}
+    {{> create-category}}
   </main>
   <footer>
       

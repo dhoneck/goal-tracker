@@ -1,5 +1,7 @@
 // Grab HTML Elements
 const addCategoryBtn = document.getElementById('add-category-btn');
+const categoryNameInput = document.getElementById('category-name');
+const submitCategoryBtn = document.getElementById('submit-category-btn');
 const addGoalBtn = document.getElementById('add-goal-btn');
 const goalNav = document.getElementById('goal-nav-list');
 const accordionContainer = document.getElementById('accordion');
@@ -41,6 +43,8 @@ function getCategories(userData) {
 
 // Create dynamic nav bar
 function createNav(categories) {
+  // Reset goal nav
+  goalNav.innerHTML = '';
   console.log('Creating a nav bar containing user categories');
   // Add 'All Goals' to beginning of categories to insert it at front of nav bar
   categories.unshift('All Goals');
@@ -96,11 +100,11 @@ async function displayGoals(category, userData) {
         <div class="accordion-item">
           <h2 class="accordion-header" id="heading${index}">
             <button
-              class="accordion-button"
+              class="accordion-button collapsed"
               type="button"
               data-mdb-toggle="collapse"
               data-mdb-target="#collapse${index}"
-              aria-expanded="true"
+              aria-expanded="false"
               aria-controls="collapse${index}"
             >
               ${goal.goal_name}
@@ -113,12 +117,40 @@ async function displayGoals(category, userData) {
           </div>
         </div>
         `
-        index++;
-        // Add accordion to container
-        accordionContainer.innerHTML += accordionTemplate;
+      index++;
+      // Add accordion to container
+      accordionContainer.innerHTML += accordionTemplate;
     }
   }
+  // Add message if no goals have been added
+  if (index == 0) {
+    accordionContainer.innerHTML = '<p class="text-center">No goals for this category.</p>';
+  }
 }
+
+// Submit category
+const submitCategory = async (event) => {
+  console.log('Attempting to add a category');
+  event.preventDefault();
+
+  const categoryName = categoryNameInput.value.trim();
+  
+  if (categoryName) {
+    const response = await fetch('/api/categories', {
+      method: 'POST',
+      body: JSON.stringify({ categoryName }),
+      headers: { 'Content-Type': 'application/json' },
+    });
+
+    // Clear category name input
+    categoryNameInput.value = '';
+    if (response.ok) {
+      refreshPage('All Goals');
+    } else {
+      alert('Category could not be added.');
+    }
+  }
+};
 
 // Refreshes user data, nav bar, and goals
 async function refreshPage(goalCategory) {
@@ -156,5 +188,8 @@ const addGoalHandler = async (e) => {
 };
 addGoalBtn
 .addEventListener('click', addGoalHandler);
+
+submitCategoryBtn
+  .addEventListener('click', submitCategory);
 
 refreshPage('All Goals');
