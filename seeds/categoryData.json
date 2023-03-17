@@ -14,5 +14,23 @@
   {
     "category_name": "Relational",
     "user_id": 1
+  },
+  {
+    "category_name": "Intellectual"
+  },
+  {
+    "category_name": "Emotional"
+  },
+  {
+    "category_name": "Physical Health"
+  },
+  {
+    "category_name": "Social"
+  },
+  {
+    "category_name": "Spiritual"
+  },
+  {
+    "category_name": "Financial"
   }
 ]
