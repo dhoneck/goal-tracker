@@ -89,5 +89,26 @@ async function refreshPage() {
   });
 }
 
-refreshPage();
 
+// Event listener to add a new goal
+const addGoalHandler = async (e) => {
+  e.preventDefault();
+
+  const response = await fetch(`add-goal`, {
+    method: 'GET',
+    headers: { 'Content-Type': 'application/json', },
+  });
+  
+  if (response.ok) {
+    window.location.href = '/add-goal';
+  }
+  else {
+    alert('Button did not work');
+  }
+};
+addGoalBtn
+.addEventListener('click', addGoalHandler);
+
+
+
+refreshPage();

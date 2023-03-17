@@ -33,5 +33,29 @@
     "goal_name": "Call my family every week",
     "user_id": 1,
     "category_id": 4
+  },
+  {
+    "goal_name": "Study",
+    "category_id": 5
+  },
+  {
+    "goal_name": "Examine Feelings",
+    "category_id": 6
+  },
+  {
+    "goal_name": "Exercise",
+    "category_id": 7
+  },
+  {
+    "goal_name": "Call a friend",
+    "category_id": 8
+  },
+  {
+    "goal_name": "Meditation",
+    "category_id": 9
+  },
+  {
+    "goal_name": "Save paycheck percentage",
+    "category_id": 10
   }
 ]

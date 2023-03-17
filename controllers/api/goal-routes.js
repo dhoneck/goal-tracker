@@ -189,7 +189,7 @@ router.get('/user/data', async (req, res) => {
 });
 
 // CREATE new goal
-router.post('user/:id/goal', async (req, res) => {
+router.post('user/goal', async (req, res) => {
     /*
     Needs the following variables from the body of the request:
     goalName,logFrequency,reminderTime,startDate,endDate,
@@ -198,7 +198,7 @@ router.post('user/:id/goal', async (req, res) => {
     try {
         const dbGoalData = await Goal.create({
             goal_name: req.body.goalName,
-            user_id: req.params.id,
+            user_id: req.session.user,
         });
         const dbHistoryData = await GoalHistory.create({
             goal_id: dbGoalData.id,
@@ -216,7 +216,7 @@ router.post('user/:id/goal', async (req, res) => {
         const dbCategoryData = await Category.create({
             category_name: req.body.categoryName,
             goal_id: dbGoalData.id,
-            user_id: req.params.id,
+            user_id: req.session.user,
         });
 
         res.status(200).json(dbGoalData, dbHistoryData, dbMetricData, dbCategoryData);
@@ -227,8 +227,45 @@ router.post('user/:id/goal', async (req, res) => {
 });
 
 // CREATE new progress data on a goal
-// TODO
-//
+router.post('user/goal', async (req, res) => {
+    /*
+    Needs the following variables from the body of the request:
+    goalId,amountToUpdate,updateDate
+    */
+    try {
+        if (req.session.loggedIn) {
+            const getHistoryData = await GoalHistory.findOne({
+                where: { goal_id: req.body.goalId },
+                order: [
+                    ['start_date', 'ASC'],
+                ],
+            });
+            const getPeriodData = await GoalPeriod.findOne({
+                where: { goal_history_id: getHistoryData.id },
+                order: [
+                    ['start_date', 'ASC'],
+                ],
+            });
+
+            const newAmount = getPeriodData.current_amount + req.body.amountToUpdate;
+            const dbPeriodData = await GoalPeriod.update({ current_amount: newAmount}, {
+                where: {id: getPeriodData.id},
+            });
+            const dbProgressData = await Progress.create({
+                goal_period_id: getPeriodData.id,
+                update_date: req.body.updateDate,
+                progress_amount: req.body.amountToUpdate,
+            });
+
+            res.status(200).json({dbPeriodData, dbProgressData});
+        } else {
+            res.status(400).json({message: "User is not logged in"});
+        }
+    } catch (err) {
+        console.log(err);
+        res.status(500).json(err);
+    }
+});
 
 // CREATE new template goal
 router.post('/template', async (req, res) => {
