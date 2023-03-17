@@ -1,3 +1,12 @@
 <div class="col-3 my-2">
-    <button type="button" class="btn btn-secondary">Add {{goal_name}}</button>
+    <button 
+        id="template-{{id}}" 
+        type="button" 
+        class="btn btn-secondary goal-template" 
+        data-mdb-toggle="modal" 
+        data-mdb-target="#continueGoalForm"
+    >
+    Add "{{goal_name}}"
+    </button>
+    
 </div>

@@ -43,7 +43,7 @@ GoalHistory.init(
         'Daily',
         'Twice a week',
         'Weekly',
-        'Monthly,'
+        'Monthly'
       ]
     },
     start_date: {

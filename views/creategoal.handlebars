@@ -19,7 +19,135 @@
             {{>create-partial}}
         {{/each}}
     </div>
-    <a class="btn btn-primary" href="" role="button" id="continue-goal">Continue</a>
+    <button type="button" class="btn btn-primary" data-mdb-toggle="modal" data-mdb-target="#staticBackdrop" id="continue-goal" disabled>Continue</button>
+    
+    <!-- Add Modal if the goal name is not entered -->
+    <div
+        class="modal fade"
+        id="staticBackdrop"
+        data-mdb-backdrop="static"
+        data-mdb-keyboard="false"
+        tabindex="-1"
+        aria-labelledby="staticBackdropLabel"
+        aria-hidden="true"
+    >
+    <div class="modal-dialog">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="staticBackdropLabel">Error</h5>
+            <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">Please enter a name for your goal to continue</div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-mdb-dismiss="modal">Understood</button>
+        </div>
+        </div>
+    </div>
+    </div>
+
+    <!-- Pops up this Modal if the goal name is entered -->
+    <div
+        class="modal fade"
+        id="continueGoalForm"
+        data-mdb-backdrop="static"
+        data-mdb-keyboard="false"
+        tabindex="-1"
+        aria-labelledby="staticBackdropLabel"
+        aria-hidden="true"
+    >
+    <div class="modal-dialog">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="staticBackdropLabel">Customize Your Goal</h5>
+            <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <!-- This is the part of the form that will input the goal's definition -->
+        <div class="modal-body">
+            <form class="row g-3" novalidate>
+                <div class="col-md-12">
+
+                    <p>How frequently would you like to complete your goal?</p>
+                    <!-- Time Period -->
+                    <div class="input-group mb-3">
+                        <input type="number" id="time_period" class="form-control" aria-describedby="num-times" />
+                        <span class="input-group-text" id="num-times">Times</span>
+                    </div>
+
+                    <!-- Log Frequency -->
+                    <div class="form-outline">
+                        <select id="log-frequency" class="form-select mb-3">
+                            <option selected>Select Goal Frequency</option>
+                            <option value="Time(s)">Time(s)</option>
+                            <option value="Per Hour">Per Hour</option>
+                            <option value="Per Day">Per Day</option>
+                            <option value="Per Week">Per Week</option>
+                            <option value="Every Two Weeks">Every Two Weeks</option>
+                            <option value="Per Month">Per Month</option>
+                            <option value="Every Two Months">Every Two Months</option>
+                            <option value="Per Quarter">Per Quarter</option>
+                            <option value="Every Six Months">Every Six Months</option>
+                            <option value="Per Year">Per Year</option>
+                        </select>
+                    </div>
+
+                    <!-- Reminder Time -->
+                    <p>How frequently would you like to be reminded?</p>
+                    <div class="form-outline">
+                        <select id="log-frequency" class="form-select mb-3">
+                            <option selected>Select Reminder Frequency</option>
+                            <option value="Hourly">Hourly</option>
+                            <option value="Twice a day">Twice a day</option>
+                            <option value="Daily">Daily</option>
+                            <option value="Twice a week">Twice a week</option>
+                            <option value="Weekly">Weekly</option>
+                            <option value="Monthly">Monthly</option>
+                        </select>
+                    </div>
+
+                    <!-- Start date -->
+                    <p>Enter dates and times for your goal.</p>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="start-datetime-local">Start Date/Time</span>
+                        <input type="datetime-local" id="start-date" class="form-control" aria-describedby="start-datetime-local">
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="end-datetime-local">End Date/Time</span>
+                        <input type="datetime-local" id="end-date" class="form-control" aria-describedby="end-datetime-local">
+                    </div>
+
+                    <!-- Goal amount -->
+                    <p>What amount qualifies the goal as complete in the given frequency?</p>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="goal-quantity-span">Quantity</span>
+                        <input type="number" id="goal-quantity" class="form-control" aria-describedby="goal-quantity-span" />
+                    </div>
+
+                    <!-- Metric -->
+                    <div class="input-group input-group-lg mb-3">
+                        <span class="input-group-text" id="units-span">Units</span>
+                        <select id="metric-unit" class="form-select mb-3">
+                            <option selected>Select Reminder Frequency</option>
+                            <option value="$">Dollar(s)</option>
+                            <option value="min">Minute(s)</option>
+                            <option value="Days">Day(s)</option>
+                            <option value="Time(s)">Time(s)</option>
+                            <option value=".">Period(s)</option>
+                            <option value="%">Percent</option>
+                            <option value="Yes/No">Completion(s)</option>
+                        </select>
+                    </div>
+                </div>
+            </form>
+    
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-mdb-dismiss="modal">Finish</button>
+        </div>
+        </div>
+    </div>
+    </div>
+
 </div>
 
 <script src="/js/createGoal.js"></script>
