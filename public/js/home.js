@@ -53,15 +53,17 @@ function createNav(categories) {
   for (category of categories) {
     // Create new elements
     let liEl = document.createElement('li');
-    let aEl = document.createElement('a');
+    let btnEl = document.createElement('button');
 
     // Add text and attributes to elements
     liEl.classList = 'nav-item';
-    aEl.classList = 'nav-link';
-    aEl.textContent = category;
+    btnEl.classList = 'btn btn-outline-secondary ms-2';
+    btnEl.type = 'Button'
+    btnEl.setAttribute('data-mdb-ripple-color', 'dark')
+    btnEl.textContent = category;
 
     // Append elements
-    liEl.append(aEl);
+    liEl.append(btnEl);
     goalNav.append(liEl);
   }
 
