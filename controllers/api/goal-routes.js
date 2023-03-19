@@ -59,6 +59,17 @@ router.get('/user/categories', async (req, res) =>  {
                     model: Goal,
                     attributes: [
                         'goal_name',
+                    ],
+                    include: [
+                        {
+                            model: GoalHistory,
+                            include: {
+                                model: GoalPeriod,
+                                include: {
+                                    model: Progress
+                                }
+                            }
+                        },
                     ]
                 }
             ]
@@ -385,13 +396,17 @@ router.post('/user/goal', async (req, res) => {
     timePeriod,metricLabel,metricUnit,categoryName
     */
     try {
-        const dbCategoryData = await Category.findOne({
-            where: { category_name: req.body.categoryName, },
+        const dbCategoryData = await Category.findOrCreate({
+            where: { 
+                category_name: req.body.categoryName, 
+                user_id: req.session.user,
+            },
         });
+        const catID = dbCategoryData[0].dataValues.id;
         const dbGoalData = await Goal.create({
             goal_name: req.body.goalName,
             user_id: req.session.user,
-            category_id: dbCategoryData.id,
+            category_id: catID,
         });
         const dbHistoryData = await GoalHistory.create({
             goal_id: dbGoalData.id,

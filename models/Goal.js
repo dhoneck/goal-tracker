@@ -35,6 +35,13 @@ Goal.init(
     },
   },
   {
+    hooks: {
+      beforeCreate: async (newGoalData) => {
+        // Capitalize first letter of goal name
+        newGoalData.goal_name = newGoalData.goal_name[0].toUpperCase() + newGoalData.goal_name.substr(1);
+        return newGoalData;
+      }
+    },
     sequelize,
     timestamps: false,
     freezeTableName: true,

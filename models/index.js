@@ -48,6 +48,12 @@ User.hasMany(Goal, {
     onUpdate: 'CASCADE',
 });
 
+User.hasMany(Category, {
+    foreignKey: 'user_id',
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+});
+
 Category.hasMany(Goal, {
     foreignKey: 'category_id',
     onDelete: 'CASCADE',

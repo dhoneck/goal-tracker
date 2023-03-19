@@ -58,6 +58,9 @@ function createNav(categories) {
     // Add text and attributes to elements
     liEl.classList = 'nav-item';
     btnEl.classList = 'btn btn-outline-secondary ms-2';
+    if (category == 'All Goals') {
+      btnEl.classList.add('active');
+    }
     btnEl.type = 'Button'
     btnEl.setAttribute('data-mdb-ripple-color', 'dark')
     btnEl.textContent = category;
@@ -141,6 +144,15 @@ async function refreshPage(goalCategory) {
   goalNavItems.forEach(function(elem) {
     elem.addEventListener('click', function (e) {
       e.preventDefault();
+      console.log(e.target);
+
+      // Remove active class from nav items
+      document.querySelectorAll('.nav-item button').forEach(function(navElem) {       
+        navElem.classList.remove('active');
+      });
+      // Add active class from nav items
+      e.target.classList.add('active');
+      
       const category = e.target.textContent;
       console.log(`'${category}' was clicked`);
       displayGoals(category, userData);
