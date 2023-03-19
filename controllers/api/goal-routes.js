@@ -188,6 +188,195 @@ router.get('/user/data', async (req, res) => {
     }
 });
 
+// Function to calculate Goal Periods with start and end dates
+function renderPeriodsFromHistory(startDate, endDate, frequency) {
+    // Calculate goal period values to create each one
+    let numPeriods = 1;
+    let startPeriodDate = new Date(startDate);
+    let endPeriodDate = new Date(endDate);
+    const startDates = [];
+    const endDates = [];
+
+    // variables to help calculate each period
+    const difYears = endPeriodDate.getUTCFullYear() - startPeriodDate.getUTCFullYear();
+    const difMonths = endPeriodDate.getUTCMonth() - startPeriodDate.getUTCMonth();
+    const difDays = endPeriodDate.getUTCDate() - startPeriodDate.getUTCDate();
+    const difHours = endPeriodDate.getUTCHours() - startPeriodDate.getUTCHours();
+    const difMinutes = endPeriodDate.getUTCMinutes() - startPeriodDate.getUTCMinutes();
+
+    // switch to find the proper start and end dates
+    switch (frequency) {
+        case 'Per Hour':
+            totDif = difYears*8760 + difMonths*730 + difDays*24 + difHours + difMinutes/60;
+            numPeriods = Math.ceil(totDif);
+            if (numPeriods > 1) {
+                for (let i = 0; i < numPeriods - 1; i++) {
+                    startDates.push(startPeriodDate.toISOString());
+                    startPeriodDate.setUTCHours(startPeriodDate.getUTCHours() + 1);
+                    startPeriodDate.setUTCSeconds(0);
+                    endDates.push(startPeriodDate.toISOString());
+                    startPeriodDate.setUTCSeconds(1);
+                }
+                startDates.push(startPeriodDate);
+                endDates.push(endPeriodDate);
+            } else {
+                startDates.push(startPeriodDate);
+                endDates.push(endPeriodDate);
+            }
+            break;
+        case 'Per Day':
+            totDif = difYears*365 + difMonths*365/12 + difDays + difHours/24 + difMinutes/1440;
+            numPeriods = Math.ceil(totDif);
+            if (numPeriods > 1) {
+                for (let i = 0; i < numPeriods - 1; i++) {
+                    startDates.push(startPeriodDate.toISOString());
+                    startPeriodDate.setUTCDate(startPeriodDate.getUTCDate() + 1);
+                    startPeriodDate.setUTCSeconds(0);
+                    endDates.push(startPeriodDate.toISOString());
+                    startPeriodDate.setUTCSeconds(1);
+                }
+                startDates.push(startPeriodDate);
+                endDates.push(endPeriodDate);
+            } else {
+                startDates.push(startPeriodDate);
+                endDates.push(endPeriodDate);
+            }
+            break;
+        case 'Per Week':
+            totDif = difYears*365/7 + difMonths*365/7/12 + difDays/7 + difHours/168 + difMinutes/10080;
+            numPeriods = Math.ceil(totDif);
+            if (numPeriods > 1) {
+                for (let i = 0; i < numPeriods - 1; i++) {
+                    startDates.push(startPeriodDate.toISOString());
+                    startPeriodDate.setUTCDate(startPeriodDate.getUTCDate() + 7);
+                    startPeriodDate.setUTCSeconds(0);
+                    endDates.push(startPeriodDate.toISOString());
+                    startPeriodDate.setUTCSeconds(1);
+                }
+                startDates.push(startPeriodDate);
+                endDates.push(endPeriodDate);
+            } else {
+                startDates.push(startPeriodDate);
+                endDates.push(endPeriodDate);
+            }
+            break;
+        case 'Every Two Weeks':
+            totDif = difYears*365/7/2 + difMonths*365/7/12/2 + difDays/7/2 + difHours/168/2 + difMinutes/10080/2;
+            numPeriods = Math.ceil(totDif);
+            if (numPeriods > 1) {
+                for (let i = 0; i < numPeriods - 1; i++) {
+                    startDates.push(startPeriodDate.toISOString());
+                    startPeriodDate.setUTCDate(startPeriodDate.getUTCDate() + 14);
+                    startPeriodDate.setUTCSeconds(0);
+                    endDates.push(startPeriodDate.toISOString());
+                    startPeriodDate.setUTCSeconds(1);
+                }
+                startDates.push(startPeriodDate);
+                endDates.push(endPeriodDate);
+            } else {
+                startDates.push(startPeriodDate);
+                endDates.push(endPeriodDate);
+            }
+            break;
+        case 'Per Month':
+            totDif = difYears*12 + difMonths + difDays/365*12 + difHours/365*12/24 + difMinutes/365*12/24/60;
+            numPeriods = Math.ceil(totDif);
+            if (numPeriods > 1) {
+                for (let i = 0; i < numPeriods - 1; i++) {
+                    startDates.push(startPeriodDate.toISOString());
+                    startPeriodDate.setUTCMonth(startPeriodDate.getUTCMonth() + 1);
+                    startPeriodDate.setUTCSeconds(0);
+                    endDates.push(startPeriodDate.toISOString());
+                    startPeriodDate.setUTCSeconds(1);
+                }
+                startDates.push(startPeriodDate);
+                endDates.push(endPeriodDate);
+            } else {
+                startDates.push(startPeriodDate);
+                endDates.push(endPeriodDate);
+            }
+            break;
+        case 'Every Two Months':
+            totDif = difYears*12/2 + difMonths/2 + difDays/365*12/2 + difHours/365*12/24/2 + difMinutes/365*12/24/60/2;
+            numPeriods = Math.ceil(totDif);
+            if (numPeriods > 1) {
+                for (let i = 0; i < numPeriods - 1; i++) {
+                    startDates.push(startPeriodDate.toISOString());
+                    startPeriodDate.setUTCMonth(startPeriodDate.getUTCMonth() + 2);
+                    startPeriodDate.setUTCSeconds(0);
+                    endDates.push(startPeriodDate.toISOString());
+                    startPeriodDate.setUTCSeconds(1);
+                }
+                startDates.push(startPeriodDate);
+                endDates.push(endPeriodDate);
+            } else {
+                startDates.push(startPeriodDate);
+                endDates.push(endPeriodDate);
+            }
+            break;
+        case 'Per Quarter':
+            totDif = difYears*4 + difMonths/3 + difDays/365*12/3 + difHours/365*12/24/3 + difMinutes/365*12/24/60/3;
+            numPeriods = Math.ceil(totDif);
+            if (numPeriods > 1) {
+                for (let i = 0; i < numPeriods - 1; i++) {
+                    startDates.push(startPeriodDate.toISOString());
+                    startPeriodDate.setUTCMonth(startPeriodDate.getUTCMonth() + 3);
+                    startPeriodDate.setUTCSeconds(0);
+                    endDates.push(startPeriodDate.toISOString());
+                    startPeriodDate.setUTCSeconds(1);
+                }
+                startDates.push(startPeriodDate);
+                endDates.push(endPeriodDate);
+            } else {
+                startDates.push(startPeriodDate);
+                endDates.push(endPeriodDate);
+            }
+            break;
+        case 'Every Six Months':
+            totDif = difYears*2 + difMonths/6 + difDays/365*2 + difHours/4380 + difMinutes/262800;
+            numPeriods = Math.ceil(totDif);
+            if (numPeriods > 1) {
+                for (let i = 0; i < numPeriods - 1; i++) {
+                    startDates.push(startPeriodDate.toISOString());
+                    startPeriodDate.setUTCMonth(startPeriodDate.getUTCMonth() + 6);
+                    startPeriodDate.setUTCSeconds(0);
+                    endDates.push(startPeriodDate.toISOString());
+                    startPeriodDate.setUTCSeconds(1);
+                }
+                startDates.push(startPeriodDate);
+                endDates.push(endPeriodDate);
+            } else {
+                startDates.push(startPeriodDate);
+                endDates.push(endPeriodDate);
+            }
+            break;
+        case 'Per Year':
+            totDif = difYears + difMonths/12 + difDays/365 + difHours/8760 + difMinutes/525600;
+            numPeriods = Math.ceil(totDif);
+            if (numPeriods > 1) {
+                for (let i = 0; i < numPeriods - 1; i++) {
+                    startDates.push(startPeriodDate.toISOString());
+                    startPeriodDate.setUTCFullYear(startPeriodDate.getUTCFullYear() + 1);
+                    startPeriodDate.setUTCSeconds(0);
+                    endDates.push(startPeriodDate.toISOString());
+                    startPeriodDate.setUTCSeconds(1);
+                }
+                startDates.push(startPeriodDate);
+                endDates.push(endPeriodDate);
+            } else {
+                startDates.push(startPeriodDate);
+                endDates.push(endPeriodDate);
+            }
+            break;
+        default:
+            startDates.push(startPeriodDate);
+            endDates.push(endPeriodDate);
+            break;
+    }
+
+    return [ startDates, endDates ];
+}
+
 // CREATE new goal
 router.post('/user/goal', async (req, res) => {
     /*
@@ -218,7 +407,26 @@ router.post('/user/goal', async (req, res) => {
             goal_history_id: dbHistoryData.id,
         });
 
-        res.status(200).json({dbGoalData, dbHistoryData, dbMetricData, dbCategoryData});
+        // Calculate goal period values to create each one
+        const dbPeriodData = [];
+        const [ starts, ends ] = renderPeriodsFromHistory(dbHistoryData.start_date, dbHistoryData.end_date, dbHistoryData.log_frequency);
+        for (let i = 0; i < starts.length; i++) {
+            const strt = starts[i];
+            const end = ends[i];
+
+            // TODO: verify that the goal amount is the metric_label and not the time_period * metric_label
+            const PeriodData = await GoalPeriod.create({
+                goal_history_id: dbHistoryData.id,
+                start_date: strt,
+                end_date: end,
+                goal_amount: dbMetricData.metric_label,
+                current_amount: 0,
+                goal_complete: false,
+            });
+            dbPeriodData.push(PeriodData);
+        }
+
+        res.status(200).json({dbGoalData, dbHistoryData, dbMetricData, dbCategoryData, dbPeriodData});
     } catch (err) {
         console.log(err);
         res.status(500).json(err);
