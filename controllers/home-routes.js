@@ -20,7 +20,7 @@ router.get('/login', (req, res) => {
 });
 
 // Load the add-goal page with all goal templates
-router.get('/add-goal', async (req, res) => {
+router.get('/add-goal', withAuth, async (req, res) => {
     try {
         const dbGoalData = await Goal.findAll({
             where: {
