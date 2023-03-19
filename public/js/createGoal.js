@@ -7,6 +7,8 @@ const addNewCategoryButton = document.querySelector('#add-category-form-btn');
 const submitNewCategoryButton = document.querySelector('#submit-category-btn');
 
 // Define goal form DOM elements for submission
+const goalNameFormInput = document.querySelector('#goal-name-form');
+const categoryInput = document.querySelector('#add-category-form');
 const timePeriodInput = document.querySelector('#time_period');
 const goalFrequencyInput = document.querySelector('#log-frequency');
 const reminderFrequencyInput = document.querySelector('#reminder-frequency');
@@ -14,7 +16,6 @@ const startDateInput = document.querySelector('#start-date');
 const endDateInput = document.querySelector('#end-date');
 const quantityInput = document.querySelector('#goal-quantity');
 const unitsInput = document.querySelector('#metric-unit');
-const categoryInput = document.querySelector('#add-category-form');
 
 // Event listener to add a new post
 const getGoalTemplateInfo = async (e) => {
@@ -33,8 +34,11 @@ const getGoalTemplateInfo = async (e) => {
     if (response.ok) {
         response.json().then((res) => {
             console.log(res);
+            // Load the name of the goal onto both forms
             goalNameInput.className = 'form-control active';
             goalNameInput.value = res.goals[0].goal_name;
+            goalNameFormInput.className = 'form-control active';
+            goalNameFormInput.value = res.goals[0].goal_name;
 
             // Modal form data gets populated with the template's data
             const gHist = res.goals[0].goal_histories[0]
@@ -58,11 +62,13 @@ const continueCreatingGoal = async (e) => {
     let goalName = goalNameInput.value
     if (goalName) {
         document.getElementById('continue-goal').disabled = false;
-        continueGoalButton.setAttribute("data-mdb-target", "#continueGoalForm")
+        continueGoalButton.setAttribute("data-mdb-target", "#continueGoalForm");
+        goalNameFormInput.className = 'form-control active';
+        goalNameFormInput.value = goalNameInput.value;
     } 
     else {
         document.getElementById('continue-goal').disabled = true;
-        continueGoalButton.setAttribute("data-mdb-target", "#staticBackdrop")
+        continueGoalButton.setAttribute("data-mdb-target", "#staticBackdrop");
     }
 }
 
@@ -92,7 +98,7 @@ const renderUserCategories = async (e) => {
 const submitNewGoal = async (e) => {
     e.preventDefault();
     // Define Goal Form values from the DOM
-    const goalName = goalNameInput.value;
+    const goalName = goalNameFormInput.value;
     const logFrequency = goalFrequencyInput.value;
     const reminderTime = reminderFrequencyInput.value;
     let startDate = startDateInput.value;

@@ -429,12 +429,12 @@ router.post('/user/goal', async (req, res) => {
             const strt = starts[i];
             const end = ends[i];
 
-            // TODO: verify that the goal amount is the metric_label and not the time_period * metric_label
+            // Creates each GoalPeriod row given the time constraints on the incoming goal
             const PeriodData = await GoalPeriod.create({
                 goal_history_id: dbHistoryData.id,
                 start_date: strt,
                 end_date: end,
-                goal_amount: dbMetricData.metric_label,
+                goal_amount: dbHistoryData.time_period * dbMetricData.metric_label,
                 current_amount: 0,
                 goal_complete: false,
             });

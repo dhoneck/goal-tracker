@@ -37,7 +37,9 @@ Progress.belongsTo(GoalPeriod, {
 });
 
 Metric.belongsTo(GoalHistory, {
-    foreignKey: 'metric_id'
+    foreignKey: 'goal_history_id',
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
 });
 
 //
