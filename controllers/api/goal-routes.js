@@ -59,6 +59,7 @@ router.get('/user/categories', async (req, res) =>  {
                     model: Goal,
                     attributes: [
                         'goal_name',
+                        'id'
                     ],
                     include: [
                         {
@@ -483,6 +484,71 @@ router.post('/user/goal', async (req, res) => {
         } else {
             res.status(400).json({message: "User is not logged in"});
         }
+    } catch (err) {
+        console.log(err);
+        res.status(500).json(err);
+    }
+});
+
+// CREATE new goal progress
+router.post('/progress', async (req, res) => {
+    /*
+    Needs the following variables from the body of the request:
+    goalName,logFrequency,reminderTime,startDate,endDate,
+    timePeriod,metricLabel,metricUnit,categoryName
+    */
+    try {
+        // TODO: Determine goal period id based on time
+        const goalId = req.body.goalId
+        const parentGoal = await Goal.findOne({
+            where: {
+                user_id: req.session.user,
+                id: goalId
+            },
+            plain: true
+        });
+        console.log('Parent goal');
+        console.log(parentGoal);
+
+        // TODO: Adjust this to get correct goal history once we implement that functionality - right now we only have 1 goal history per goal
+        const goalHistory = await GoalHistory.findOne({
+            where: {
+                goal_id: parentGoal.dataValues.id
+            },
+            plain: true
+        })
+        console.log('goalHistoryId: ' + goalHistory.dataValues.id)
+        const goalPeriods = await GoalPeriod.findAll({
+            where: {
+                goal_history_id: goalHistory.dataValues.id
+            },
+            raw: true
+        });
+
+        console.log('All Goal Periods');
+        console.log(goalPeriods);
+        let goalPeriodId;
+        for (const period of goalPeriods) {
+            let start_date = new Date(period.start_date);
+            let end_date = new Date(period.end_date);
+            let progressDate = new Date(req.body.progressDate);
+            if (progressDate >= start_date && progressDate <= end_date) {
+                goalPeriodId = period.id;
+                console.log(`THIS PROGRESS BELONGS TO GOAL PERIOD # ${goalPeriodId}`);
+            }
+        }
+
+        // Return 400 status if no goal period found
+        if (!goalPeriodId) {
+            res.status(400).json({ message: "No goal period found" });
+            return;
+        }
+        const newProgress = await Progress.create({
+            goal_period_id: goalPeriodId,
+            update_date: req.body.progressDate,
+            progress_amount: req.body.progressAmount
+        });
+        res.status(200).json({newProgress});
     } catch (err) {
         console.log(err);
         res.status(500).json(err);

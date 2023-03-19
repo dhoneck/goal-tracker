@@ -1,10 +1,10 @@
 // Grab HTML Elements
-// const addCategoryBtn = document.getElementById('add-category-btn');
-// const categoryNameInput = document.getElementById('category-name');
-// const submitCategoryBtn = document.getElementById('submit-category-btn');
-// const addGoalBtn = document.getElementById('add-goal-btn');
 const goalNav = document.getElementById('goal-nav-list');
 const accordionContainer = document.getElementById('accordion');
+const progressAmountInput = document.getElementById('progress-amount');
+const progressDateInput = document.getElementById('progress-date');
+const submitProgressBtn = document.getElementById('submit-progress-btn');
+let currentCategory = 'All Goals'
 let goalNavItems;
 
 // Fetches and returns user data
@@ -76,6 +76,9 @@ function createNav(categories) {
 
 // Displays goals based on category name
 async function displayGoals(category, userData) {
+  // Set current category for place saving purposes
+  currentCategory = category;
+
   // Reset accordion container
   accordionContainer.innerHTML = '';
   console.log(`Display goals for category '${category}'`);
@@ -117,7 +120,9 @@ async function displayGoals(category, userData) {
           </h2>
           <div id="collapse${index}" class="accordion-collapse collapse" aria-labelledby="heading${index}" data-mdb-parent="#accordion">
             <div class="accordion-body">
-              Some Cool Graphics Go Here
+              <button class="add-progress-btn btn btn-primary btn-sm" data-mdb-toggle="modal" data-goal="${goal.id}" data-mdb-target="#createProgress">Add Progress</button>
+              <br>
+              <p>Category: ${category.category_name}</p>
             </div>
           </div>
         </div>
@@ -132,6 +137,43 @@ async function displayGoals(category, userData) {
     accordionContainer.innerHTML = '<p class="text-center">No goals for this category.</p>';
   }
 }
+
+// Submit progress
+const submitProgress = async (event) => {
+  console.log('Attempting to add progress');
+  event.preventDefault();
+
+  // Grab goal ID that was set on the submit button
+  const goalId = event.target.dataset.goal;
+  const progressAmount = progressAmountInput.value.trim();
+  const progressDate = progressDateInput.value.trim();
+  console.log('Progress amount, date, and goal ID');
+  console.log(progressAmount);
+  console.log(progressDate);
+  console.log(goalId);
+
+  if (progressAmount && progressDate) {
+      const response = await fetch('/api/goals/progress', {
+          method: 'POST',
+          body: JSON.stringify({ goalId, progressAmount, progressDate }),
+          headers: { 'Content-Type': 'application/json' },
+      });
+  
+      // Clear progress amount and date inputs
+      progressAmountInput.value = '';
+      progressDateInput.value = '';
+      if (response.ok) {
+          // Refresh page but stay on current category
+          refreshPage(currentCategory);
+          alert('Progress added successfully.');
+      } else {
+          alert('Progress could not be added.');
+      }
+  } else {
+    alert('Progress could not be added. Data is missing.');
+  }
+};
+
 
 // Refreshes user data, nav bar, and goals
 async function refreshPage(goalCategory) {
@@ -158,6 +200,17 @@ async function refreshPage(goalCategory) {
       displayGoals(category, userData);
     });
   });
+
+  // Add event listener to pass data from button to button
+  document.querySelectorAll('.add-progress-btn').forEach(function(btnElem) {
+    btnElem.addEventListener('click', function (e) {
+      e.preventDefault();
+      submitProgressBtn.dataset.goal = e.target.dataset.goal;
+    })
+  });
+
+  // Add event listener to submit progress button
+  submitProgressBtn.addEventListener('click', submitProgress);
 }
 
 if (window.location.pathname == "/") {
