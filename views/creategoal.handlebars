@@ -67,8 +67,27 @@
                 <form class="row g-3" novalidate>
                     <div class="col-md-12">
 
-                        <p>How frequently would you like to complete your goal?</p>
+                        <!-- Name of the goal -->
+                        <div class="col-md-12">
+                            <div class="form-outline">
+                                <input type="text" class="form-control" id="goal-name-form" required />
+                                <label for="goal-name-form" class="form-label">Goal Name</label>
+                            </div>
+                        </div>
+
+                        <!-- Category Name -->
+                        <p>What category does this goal belong to?</p>
+                        <div class="input-group mb-3">
+
+                            <select id="add-category-form" class="form-select mb-3">
+                                <option selected>Select Category</option>
+                                <!-- The rest of the options added via createGoal.js -->
+                            </select>
+                            <span id="add-category-form-btn" type="button" class="btn input-group-text" data-mdb-toggle="modal" data-mdb-target="#createCategory" >Add New Category</span>
+                        </div>
+
                         <!-- Time Period -->
+                        <p>How frequently would you like to complete your goal?</p>
                         <div class="input-group mb-3">
                             <input type="number" id="time_period" class="form-control" aria-describedby="num-times" />
                             <span class="input-group-text" id="num-times">Times</span>
@@ -137,16 +156,6 @@
                             </select>
                         </div>
 
-                        <!-- Category Name -->
-                        <p>What category does this goal belong to?</p>
-                        <div class="input-group mb-3">
-
-                            <select id="add-category-form" class="form-select mb-3">
-                                <option selected>Select Category</option>
-                                <!-- The rest of the options added via createGoal.js -->
-                            </select>
-                            <span id="add-category-form-btn" type="button" class="btn input-group-text" data-mdb-toggle="modal" data-mdb-target="#createCategory" >Add New Category</span>
-                        </div>
                     </div>
                 </form>
         
