@@ -1,0 +1,38 @@
+<!-- Modal -->
+<div
+  class="modal fade"
+  id="createProgress"
+  data-mdb-backdrop="static"
+  data-mdb-keyboard="false"
+  tabindex="-1"
+  aria-labelledby="createProgressLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="createProgressLabel">Add Progress</h5>
+        <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form class="row g-3">
+          <div class="col-md-12">
+              <div class="form-outline mb-3">
+                  <input type="text" class="form-control" id="progress-amount" />
+                  <label for="progressName" class="form-label">Progress Amount</label>
+              </div>
+              <div class="input-group mb-3">
+                  <span class="input-group-text" id="progress-datetime-local">Date</span>
+                  <input type="datetime-local" id="progress-date" class="form-control" aria-describedby="progress-datetime-local">
+                </div>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-primary" data-mdb-dismiss="modal" id="submit-progress-btn">Submit</button>
+            <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">Close</button>
+          </div>
+      </form>
+      </div>
+
+    </div>
+  </div>
+</div>
