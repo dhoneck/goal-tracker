@@ -189,16 +189,20 @@ router.get('/user/data', async (req, res) => {
 });
 
 // CREATE new goal
-router.post('user/goal', async (req, res) => {
+router.post('/user/goal', async (req, res) => {
     /*
     Needs the following variables from the body of the request:
     goalName,logFrequency,reminderTime,startDate,endDate,
     timePeriod,metricLabel,metricUnit,categoryName
     */
     try {
+        const dbCategoryData = await Category.findOne({
+            where: { category_name: req.body.categoryName, },
+        });
         const dbGoalData = await Goal.create({
             goal_name: req.body.goalName,
             user_id: req.session.user,
+            category_id: dbCategoryData.id,
         });
         const dbHistoryData = await GoalHistory.create({
             goal_id: dbGoalData.id,
@@ -213,13 +217,8 @@ router.post('user/goal', async (req, res) => {
             metric_unit: req.body.metricUnit,
             goal_history_id: dbHistoryData.id,
         });
-        const dbCategoryData = await Category.create({
-            category_name: req.body.categoryName,
-            goal_id: dbGoalData.id,
-            user_id: req.session.user,
-        });
 
-        res.status(200).json(dbGoalData, dbHistoryData, dbMetricData, dbCategoryData);
+        res.status(200).json({dbGoalData, dbHistoryData, dbMetricData, dbCategoryData});
     } catch (err) {
         console.log(err);
         res.status(500).json(err);
@@ -227,7 +226,7 @@ router.post('user/goal', async (req, res) => {
 });
 
 // CREATE new progress data on a goal
-router.post('user/goal', async (req, res) => {
+router.post('/user/goal', async (req, res) => {
     /*
     Needs the following variables from the body of the request:
     goalId,amountToUpdate,updateDate
