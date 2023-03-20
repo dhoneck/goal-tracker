@@ -177,12 +177,12 @@ async function displayGoals(category, userData) {
           <div id="collapse${index}" class="accordion-collapse collapse" aria-labelledby="heading${index}" data-mdb-parent="#accordion">
             <div class="accordion-body">
               <div class="row">
-                <div class="col-8">
+                <div class="col-8 goal-info">
                   <button class="add-progress-btn btn btn-primary btn-sm" data-mdb-toggle="modal" data-goal="${goal.id}" data-mdb-target="#createProgress">Add Progress</button>
                   ${table}
                   <pre class="mt-4">${categoryName} | ${goalTimePeriod} log(s) ${goalFrequency} @ ${goalMetricCombined} | ${startDate} through ${endDate}</pre>
                 </div>
-                <div class="col-4">
+                <div class="col-4 chart-container">
                   <canvas id="goalProgressChart-${goal.id}" class="goalChart"></canvas>
                 </div>
               </div>
