@@ -7,6 +7,12 @@ const submitProgressBtn = document.getElementById('submit-progress-btn');
 let currentCategory = 'All Goals'
 let goalNavItems;
 
+// Format Date
+// function formatDate(date) {
+//   formattedDate = `${date.getDay}, ,${date.getFullYear()}`
+//   return formatedDate
+// }
+
 // Fetches and returns user data
 async function getData() {
   const response = await fetch('/api/goals/user/categories');
@@ -102,6 +108,56 @@ async function displayGoals(category, userData) {
     for (const goal of category.goals) {
       console.log('Goal:');
       console.log(goal);
+
+      // Get goal items
+      let categoryName = category.category_name;
+      let goalName = goal.goal_name;
+      let goalHistory = goal.goal_histories[0];
+      let goalFrequency = goalHistory.log_frequency;
+      let goalTimePeriod = goalHistory.time_period;
+      let goalMetricLabel = goalHistory.metric.metric_label;
+      let goalMetricUnit = goalHistory.metric.metric_unit;
+      let goalMetricCombined = `${goalMetricLabel} (${goalMetricUnit})`
+      let startDate = new Date(goalHistory.start_date).toLocaleDateString('en-us', { weekday:"long", year:"numeric", month:"short", day:"numeric"});;
+      let endDate = new Date(goalHistory.end_date).toLocaleDateString('en-us', { weekday:"long", year:"numeric", month:"short", day:"numeric"});
+      let goalPeriods = goalHistory.goal_periods;
+
+      let allProgress = [];
+      let table =
+        `
+        <table class="table table-sm mt-3">
+          <tr>
+            <th>Date</th>
+            <th>Amount (${goalMetricUnit})</th>
+          </tr>
+        `;
+      let progressCount = 0;
+      for (const period of goalPeriods) {
+        for (const progress of period.progresses) {
+          let amount = progress.progress_amount;
+          let date = new Date(progress.update_date)
+          date = date.toLocaleDateString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
+          table +=
+            `
+            <tr>
+              <td>${date}</td>
+              <td>${amount}</td>
+            </tr>
+            `;
+            progressCount++;
+        }
+      }
+      if (progressCount == 0) {
+        table +=
+            `
+            <tr>
+              <td>No progress entries found</td>
+              <td></td>
+            </tr>
+            `;
+      }
+      table += `</table>`;
+
       // Insert goal items into accordion
       let accordionTemplate =
         `
@@ -115,14 +171,14 @@ async function displayGoals(category, userData) {
               aria-expanded="false"
               aria-controls="collapse${index}"
             >
-              ${goal.goal_name}
+              ${goalName}
             </button>
           </h2>
           <div id="collapse${index}" class="accordion-collapse collapse" aria-labelledby="heading${index}" data-mdb-parent="#accordion">
             <div class="accordion-body">
               <button class="add-progress-btn btn btn-primary btn-sm" data-mdb-toggle="modal" data-goal="${goal.id}" data-mdb-target="#createProgress">Add Progress</button>
-              <br>
-              <p>Category: ${category.category_name}</p>
+              ${table}
+              <pre class="mt-4">${categoryName} | ${goalTimePeriod} log(s) ${goalFrequency} @ ${goalMetricCombined} | ${startDate} through ${endDate}</pre>
             </div>
           </div>
         </div>
@@ -147,10 +203,6 @@ const submitProgress = async (event) => {
   const goalId = event.target.dataset.goal;
   const progressAmount = progressAmountInput.value.trim();
   const progressDate = progressDateInput.value.trim();
-  console.log('Progress amount, date, and goal ID');
-  console.log(progressAmount);
-  console.log(progressDate);
-  console.log(goalId);
 
   if (progressAmount && progressDate) {
       const response = await fetch('/api/goals/progress', {
@@ -186,7 +238,6 @@ async function refreshPage(goalCategory) {
   goalNavItems.forEach(function(elem) {
     elem.addEventListener('click', function (e) {
       e.preventDefault();
-      console.log(e.target);
 
       // Remove active class from nav items
       document.querySelectorAll('.nav-item button').forEach(function(navElem) {       
