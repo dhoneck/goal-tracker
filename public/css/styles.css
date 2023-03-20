@@ -10,3 +10,17 @@
 pre {
   white-space: pre-wrap;
 }
+
+@media (max-width: 575px) {
+  body {
+    background-color: lightgreen !important;
+  }
+
+  .goal-div, .goal-info {
+    width: 100% !important;
+  }
+  
+  .chart-container {
+    display: none;
+  }
+}
