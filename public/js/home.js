@@ -353,6 +353,9 @@ async function refreshPage(goalCategory) {
 
   // Add event listener to submit progress button
   submitProgressBtn.addEventListener('click', submitProgress);
+
+  // Set the submission date/time to NOW by default
+  progressDateInput.value = new Date(Date.now()).toISOString().slice(0,16);
 }
 
 if (window.location.pathname == "/") {
