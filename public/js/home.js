@@ -176,9 +176,16 @@ async function displayGoals(category, userData) {
           </h2>
           <div id="collapse${index}" class="accordion-collapse collapse" aria-labelledby="heading${index}" data-mdb-parent="#accordion">
             <div class="accordion-body">
-              <button class="add-progress-btn btn btn-primary btn-sm" data-mdb-toggle="modal" data-goal="${goal.id}" data-mdb-target="#createProgress">Add Progress</button>
-              ${table}
-              <pre class="mt-4">${categoryName} | ${goalTimePeriod} log(s) ${goalFrequency} @ ${goalMetricCombined} | ${startDate} through ${endDate}</pre>
+              <div class="row">
+                <div class="col-8">
+                  <button class="add-progress-btn btn btn-primary btn-sm" data-mdb-toggle="modal" data-goal="${goal.id}" data-mdb-target="#createProgress">Add Progress</button>
+                  ${table}
+                  <pre class="mt-4">${categoryName} | ${goalTimePeriod} log(s) ${goalFrequency} @ ${goalMetricCombined} | ${startDate} through ${endDate}</pre>
+                </div>
+                <div class="col-4">
+                  <canvas id="goalProgressChart-${goal.id}" class="goalChart"></canvas>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -226,6 +233,81 @@ const submitProgress = async (event) => {
   }
 };
 
+// Chart JS function to show split of all goals split by category
+function renderAllCatsChart(userCatData) {
+  const colors = ['rgb(230, 25, 75)', 'rgb(60, 180, 75)', 'rgb(255, 225, 25)', 'rgb(0, 130, 200)', 'rgb(245, 130, 48)', 'rgb(145, 30, 180)', 'rgb(70, 240, 240)', 'rgb(240, 50, 230)', 'rgb(210, 245, 60)', 'rgb(250, 190, 212)', 'rgb(0, 128, 128)', 'rgb(220, 190, 255)', 'rgb(170, 110, 40)', 'rgb(255, 250, 200)', 'rgb(128, 0, 0)', 'rgb(170, 255, 195)', 'rgb(128, 128, 0)', 'rgb(255, 215, 180)', 'rgb(0, 0, 128)', 'rgb(128, 128, 128)', 'rgb(255, 255, 255)', 'rgb(0, 0, 0)'];
+  const dataLabels = [];
+  const dataData = [];
+  const dataColors = [];
+
+  // loop through loaded goals
+  for (let i = 0; i < userCatData.length; i++) {
+    const cat = userCatData[i];
+    dataLabels.push(cat.category_name);
+    dataData.push(cat.goals.length);
+    dataColors.push(colors[i]);
+  };
+
+  // Sets up the variables for the ChartJS pie chart
+  const data = {
+    labels: dataLabels,
+    datasets: [{
+      label: 'Goals',
+      data: dataData,
+      backgroundColor: dataColors,
+      hoverOffset: 4
+    }]
+  };
+  const config = {
+    type: 'doughnut',
+    data: data,
+  };
+
+  return config;
+}
+
+// Function to render the goal completion charts
+function renderGoalCompChart(userCatData) {
+
+  for (let i = 0; i < userCatData.length; i++) {
+    const catGoals = userCatData[i].goals;
+
+    for (let j = 0; j < catGoals.length; j++) {
+      const gHist = catGoals[j].goal_histories;
+      const chartEl = document.getElementById(`goalProgressChart-${catGoals[j].id}`);
+      const dataData = [0, 0];
+
+      for (let k = 0; k < gHist.length; k++) {
+        const gPers = gHist[k].goal_periods;
+
+        for (let l = 0; l < gPers.length; l++) {
+          const period = gPers[l];
+          const futureDate = (Date.now() < new Date(period.start_date));
+          if (!futureDate) {
+            if (period.goal_complete) {
+              dataData[0] += 1;
+            } else {
+              dataData[1] += 1;
+            }
+          }
+        }
+      }
+      
+      new Chart(chartEl, {
+        type: 'pie',
+        data: {
+          labels: ['Complete','Incomplete'],
+          datasets: [{
+            label: 'total',
+            data: dataData,
+            backgroundColor: ['rgb(70, 240, 240)','rgb(230, 25, 75)'],
+            hoverOffset: 4
+          }]
+        }
+      });
+    }
+  }
+}
 
 // Refreshes user data, nav bar, and goals
 async function refreshPage(goalCategory) {
@@ -233,6 +315,15 @@ async function refreshPage(goalCategory) {
   const categoryArr = getCategories(userData);
   createNav(categoryArr);
   displayGoals(goalCategory, userData);
+
+  // Render ChartJS doughnut graph
+  try {
+    const chartConfig = renderAllCatsChart(userData);
+    new Chart(document.getElementById('byCategoryChart'), chartConfig);
+    renderGoalCompChart(userData);
+  } catch (er) {
+    console.log(er);
+  }
 
   // Add event listener to nav 
   goalNavItems.forEach(function(elem) {
