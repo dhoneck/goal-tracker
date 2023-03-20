@@ -2,7 +2,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-[Click here to go to the deployed site.]()
+[Click here to go to the deployed site.](https://express-goal-tracker.herokuapp.com/)
 
 ## Description
 Goal Tracker is a Node.JS/Express application for tracking personal goals.
