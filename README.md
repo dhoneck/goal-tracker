@@ -19,7 +19,9 @@ Goal Tracker is a Node.JS/Express application for tracking personal goals.
 ### Mock Up
 
 The screenshot below shows the deployed site which shows it's various levels of functionality.
-[![An example of the deployed tool with a sample output already displayed.](./assets/mockup-demo.gif)](./assets/mockup-demo.gif)
+[![An example of the deployed tool with a sample output already displayed.](./assets/mockup.png)](./assets/mockup.png)
+
+[![An example of the deployed tool with a form pulled up to add a new goal.](./assets/add-goal.png)](./assets/add-goal.png)
 
 ## Installation
 * Install Node.JS

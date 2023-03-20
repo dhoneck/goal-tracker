@@ -560,7 +560,7 @@ router.post('/progress', async (req, res) => {
         const updateThisPeriod = await GoalPeriod.findByPk(goalPeriodId, { plain: true });
         const newAmo = updateThisPeriod.current_amount + req.body.progressAmount;
         let updatedPeriod;
-        if (newAmo > updateThisPeriod.goal_amount) {
+        if (newAmo >= updateThisPeriod.goal_amount) {
             updatedPeriod = await GoalPeriod.update({
                 current_amount: newAmo,
                 goal_complete: true,
