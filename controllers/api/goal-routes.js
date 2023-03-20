@@ -556,7 +556,31 @@ router.post('/progress', async (req, res) => {
             update_date: req.body.progressDate,
             progress_amount: req.body.progressAmount
         });
-        res.status(200).json({newProgress});
+
+        const updateThisPeriod = await GoalPeriod.findByPk(goalPeriodId, { plain: true });
+        const newAmo = updateThisPeriod.current_amount + req.body.progressAmount;
+        let updatedPeriod;
+        if (newAmo > updateThisPeriod.goal_amount) {
+            updatedPeriod = await GoalPeriod.update({
+                current_amount: newAmo,
+                goal_complete: true,
+            }, {
+                where: {
+                    id: goalPeriodId,
+                }
+            });
+        } else {
+            updatedPeriod = await GoalPeriod.update({
+                current_amount: newAmo,
+            }, {
+                where: {
+                    id: goalPeriodId,
+                }
+            });
+        }
+
+
+        res.status(200).json({newProgress, updatedPeriod});
     } catch (err) {
         console.log(err);
         res.status(500).json(err);
