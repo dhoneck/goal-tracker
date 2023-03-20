@@ -64,12 +64,20 @@ router.get('/user/categories', async (req, res) =>  {
                     include: [
                         {
                             model: GoalHistory,
-                            include: {
-                                model: GoalPeriod,
-                                include: {
-                                    model: Progress
-                                }
-                            }
+                            include: [
+                                {
+                                    model: GoalPeriod,
+                                    include: {
+                                        model: Progress,
+                                        order: [
+                                            ['update_date', 'DESC'],
+                                        ],
+                                    }
+                                },
+                                {
+                                    model: Metric,
+                                },
+                            ]
                         },
                     ]
                 }

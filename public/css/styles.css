@@ -6,3 +6,7 @@
 .active {
   border-color: #386bc0 !important;
 }
+
+pre {
+  white-space: pre-wrap;
+}

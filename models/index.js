@@ -80,6 +80,14 @@ GoalPeriod.hasMany(Progress, {
     onUpdate: 'CASCADE',
 });
 
+// Define has one relationships
+GoalHistory.hasOne(Metric, {
+    foreignKey: 'goal_history_id',
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+});
+
+
 module.exports = { 
     User,
     Category,
