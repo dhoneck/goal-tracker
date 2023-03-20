@@ -75,7 +75,7 @@ const continueCreatingGoal = async (e) => {
 // Function to render the category names for the user
 const renderUserCategories = async (e) => {
     e.preventDefault();
-    const response = await fetch('/api/goals//user/categories', {
+    const response = await fetch('/api/goals/user/categories', {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' },
     });
